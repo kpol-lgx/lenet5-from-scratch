@@ -21,14 +21,18 @@ def readDataset(dataset_path):
 
 # padding for the matrix of images
 def zero_pad(X, pad):
-    X_pad = np.pad(X, ((0, ), (pad, ), (pad, ), (0, )), "constant", constant_values = (0, 0))
+    # default: constant, constant_value=0
+    X_pad = np.pad(X, pad)
     return X_pad
 
 # normalise the dataset
-def normalise(image):
-    image -= image.min()
-    image = image / image.max()
-    image = (image - np.mean(image)) / np.std(image)
+def normalise(image, way="Min-Max"):
+    if way == "Min-Max":
+        image -= image.min()
+        image = image / image.max()
+      
+    else if way == "Z-score":
+        image = (image - np.mean(image)) / np.std(image)
     return image
 
 # generate random-shuffled mini-batches
